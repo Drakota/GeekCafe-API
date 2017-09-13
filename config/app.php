@@ -178,7 +178,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
-        Vinkla\Facebook\FacebookServiceProvider::class,
 
     ],
 
@@ -229,7 +228,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'Facebook' => Vinkla\Facebook\Facades\Facebook::class,
 
     ],
 
