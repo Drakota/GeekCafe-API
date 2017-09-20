@@ -12,12 +12,13 @@ class BaseController extends Controller
 {
     use Helpers;
     protected $fractal;
-    public function __construct(Manager $fractal) {
+    function __construct(Manager $fractal) {
         $this->fractal = $fractal;
     }
     public function transformItem($resource, $transformer)
     {
-      return $this->fractal->createData(new Fractal\Resource\Item($resource, $transformer))->toArray();
+      $constructnotworking = new Manager;
+      return $constructnotworking->createData(new Fractal\Resource\Item($resource, $transformer))->toArray();
     }
     public function transformCollection($resource, $transformer)
     {

@@ -14,10 +14,11 @@ class CreateItemSubItemsTable extends Migration
     public function up()
     {
         Schema::create('item_subitems', function (Blueprint $table) {
-          $table->string('item_id');
+          $table->integer('item_id')->unsigned();
           $table->foreign('item_id')->references('id')->on('items');
-          $table->string('subitem_id');
+          $table->integer('subitem_id')->unsigned();
           $table->foreign('subitem_id')->references('id')->on('subitems');
+          $table->primary(array('item_id', 'subitem_id'));
           $table->timestamps();
           $table->softDeletes();
         });

@@ -3,7 +3,7 @@
 namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class ItemSize extends Model
+class ItemSubItem extends Model
 {
     public $incrementing = false;
     protected $fillable = [

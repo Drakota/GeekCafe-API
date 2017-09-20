@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Models\Item;
 use Faker\Factory as Faker;
 
-class ItemTableSeeder extends Seeder {
+class ItemsTableSeeder extends Seeder {
 
   public function run()
   {

@@ -12,7 +12,7 @@ class User extends Model implements Authenticatable, CanResetPassword
 {
     use AuthenticableTrait, CanResetPasswordTrait, NotifiableTrait;
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'gender', 'birth_date', 'phone', 'device_token', 'image_id', 'facebook_id'
+        'first_name', 'last_name', 'email', 'password', 'gender', 'birth_date', 'phone', 'device_token', 'image_id', 'facebook_id', 'stripe_cus'
     ];
     protected $hidden = [
         'password',

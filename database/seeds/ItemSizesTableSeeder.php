@@ -17,7 +17,6 @@ class ItemSizesTableSeeder extends Seeder {
      foreach (range(1, 7) as $index) {
        ItemSize::create([
           'name' => $types[$index - 1],
-          'price' => rand(10, 30) / 10 + $index,
        ]);
      }
   }

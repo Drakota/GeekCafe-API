@@ -18,16 +18,15 @@ class DatabaseSeeder extends Seeder
       $this->call('ImagesTableSeeder');
       DB::table('branches')->truncate();
       $this->call('BranchesTableSeeder');
-      
+      DB::table('item_sizes')->truncate();
       $this->call('ItemSizesTableSeeder');
-      DB::table('items_sizes')->truncate();
-      $this->call('ItemsTableSeeder');
       DB::table('items')->truncate();
-      $this->call('ItemsTypesTableSeeder');
+      $this->call('ItemsTableSeeder');
       DB::table('item_types')->truncate();
-      $this->call('SubitemsTableSeeder');
+      $this->call('ItemTypesTableSeeder');
       DB::table('subitems')->truncate();
-      $this->call('ItemSubitemsTableSeeder');
+      $this->call('SubitemsTableSeeder');
       DB::table('item_subitems')->truncate();
+      $this->call('ItemSubitemsTableSeeder');
     }
 }

@@ -11,6 +11,11 @@ use App\Http\Transformers\UserTransformer;
 
 class AuthenticationController extends BaseController
 {
+    function __construct()
+    {
+      \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
+    }
+
     public function token(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -66,6 +71,9 @@ class AuthenticationController extends BaseController
            'id' => bin2hex(openssl_random_pseudo_bytes(8)),
            'image' => $me->getProperty('picture')['url'],
         ]);
+        $customer = \Stripe\Customer::create(array(
+          "email" => $me['email'],
+        ));
         $user = User::create([
          'email' => $me['email'],
          'gender' => $me['gender'],
@@ -74,7 +82,9 @@ class AuthenticationController extends BaseController
          'last_name' => $me['last_name'],
          'facebook_id' => $me['id'],
          'image_id' => $image->id,
+         'stripe_cus' => $customer->id,
         ]);
+        $payload['stripe_cus'] = $customer->id;
         $token = JWTAuth::fromUser($user);
         $facebookuser = $this->transformItem($user, new UserTransformer);
         $facebookuser['token'] = $token;

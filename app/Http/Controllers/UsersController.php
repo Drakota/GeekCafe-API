@@ -15,6 +15,11 @@ use App\Http\Models\User;
  */
 class UsersController extends BaseController
 {
+    function __construct()
+    {
+      \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
+    }
+
     public function view(Request $request)
     {
         $user = $request->user();
@@ -36,6 +41,10 @@ class UsersController extends BaseController
           'image_id' => ['nullable', 'exists:images,id'],
           'birth_date' => ['required', 'date_format:Y-m-d', 'before:today'],
         ]);
+        $customer = \Stripe\Customer::create(array(
+          "email" => $payload['email'],
+        ));
+        $payload['stripe_cus'] = $customer->id;
         $unhashpass = $payload['password'];
         $payload['image_id'] = 1;
         $payload['password'] = Hash::make($payload['password']);

@@ -23,11 +23,11 @@ class ItemSubitemsTableSeeder extends Seeder {
          ]);
        }
      }
-     for ($x=13; $x < 17; $x++) {
+     for ($x=37; $x <= 40; $x++) {
        for ($w=5; $w < 11; $w++) {
          ItemSubitem::create([
-            'item_id' => $i,
-            'subitem_id' => $y,
+            'item_id' => $x,
+            'subitem_id' => $w,
          ]);
        }
      }

@@ -18,9 +18,9 @@ class CreateItemsTable extends Migration
           $table->string('name');
           $table->text('description');
           $table->double('price');
-          $table->string('type_id');
+          $table->integer('type_id')->unsigned();
           $table->foreign('type_id')->references('id')->on('item_types');
-          $table->string('size_id')->nullable();
+          $table->integer('size_id')->unsigned()->nullable();
           $table->foreign('size_id')->references('id')->on('item_sizes');
           $table->string('image_id');
           $table->foreign('image_id')->references('id')->on('images');

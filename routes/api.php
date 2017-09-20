@@ -22,6 +22,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('user', 'UsersController@view');
   $api->put('user/changepassword', 'UsersController@modifypassword');
   $api->put('user/changeemail', 'UsersController@modifyemail');
+
+  /**
+  * PaymentMethodsController
+  */
+  $api->get('user/payments', 'PaymentMethodsController@listpaymentmethod');
+  $api->post('user/payment', 'PaymentMethodsController@paymentmethod');
+  $api->delete('user/payment', 'PaymentMethodsController@removepaymentmethod');
 });
 $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 
