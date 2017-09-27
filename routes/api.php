@@ -29,6 +29,19 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('user/payments', 'PaymentMethodsController@listpaymentmethod');
   $api->post('user/payment', 'PaymentMethodsController@paymentmethod');
   $api->delete('user/payment', 'PaymentMethodsController@removepaymentmethod');
+
+  /**
+  * ItemsController
+  */
+  $api->get('item/types', 'ItemsController@types');
+  $api->get('items', 'ItemsController@index');
+  $api->get('item/{item}', 'ItemsController@view');
+
+  /**
+  * SalesController
+  */
+  $api->post('checkprice', 'SalesController@checkprice');
+  $api->post('order', 'SalesController@create');
 });
 $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 

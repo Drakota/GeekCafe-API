@@ -17,11 +17,8 @@ class CreateItemsTable extends Migration
           $table->increments('id');
           $table->string('name');
           $table->text('description');
-          $table->double('price');
           $table->integer('type_id')->unsigned();
           $table->foreign('type_id')->references('id')->on('item_types');
-          $table->integer('size_id')->unsigned()->nullable();
-          $table->foreign('size_id')->references('id')->on('item_sizes');
           $table->string('image_id');
           $table->foreign('image_id')->references('id')->on('images');
           $table->timestamps();
@@ -36,6 +33,7 @@ class CreateItemsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('items');
     }
 }

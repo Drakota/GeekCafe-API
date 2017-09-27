@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItemTypesTable extends Migration
+class CreateItemPricesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateItemTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_types', function (Blueprint $table) {
+        Schema::create('item_prices', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('name');
-          $table->string('image_id');
-          $table->foreign('image_id')->references('id')->on('images');
+          $table->double('price');
+          $table->integer('item_id')->unsigned();
+          $table->foreign('item_id')->references('id')->on('items');
+          $table->integer('size_id')->unsigned()->nullable();
+          $table->foreign('size_id')->references('id')->on('item_sizes');
           $table->timestamps();
           $table->softDeletes();
         });
@@ -31,6 +33,6 @@ class CreateItemTypesTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Schema::dropIfExists('item_types');
+        Schema::dropIfExists('item_prices');
     }
 }

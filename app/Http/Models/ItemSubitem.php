@@ -10,4 +10,8 @@ class ItemSubItem extends Model
     ];
     protected $table = 'item_subitems';
     protected $primaryKey = 'id';
+    public function subitem()
+    {
+        return $this->hasOne('App\Http\Models\Subitem', 'id', 'subitem_id');
+    }
 }
