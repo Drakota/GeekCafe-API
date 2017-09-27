@@ -19,8 +19,6 @@ class CreateSaleSubitemsTable extends Migration
           $table->foreign('sale_item_id')->references('id')->on('sale_items');
           $table->integer('subitem_id')->unsigned();
           $table->foreign('subitem_id')->references('id')->on('subitems');
-          $table->integer('sale_id')->unsigned();
-          $table->foreign('sale_id')->references('id')->on('sales');
           $table->timestamps();
           $table->softDeletes();
         });

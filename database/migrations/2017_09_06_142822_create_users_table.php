@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
           $table->string('device_token', 2000)->nullable();
           $table->string('facebook_id', 300)->nullable();
           $table->string('stripe_cus', 300)->nullable();
+          $table->string('remember_token', 255)->nullable();
           $table->string('image_id')->default(1);
           $table->foreign('image_id')->references('id')->on('images');
           $table->timestamps();
