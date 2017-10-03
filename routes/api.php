@@ -38,6 +38,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('item/{item}', 'ItemsController@view');
 
   /**
+  * PromotionsController
+  */
+  $api->get('promotions', 'PromotionsController@index');
+
+  /**
   * SalesController
   */
   $api->post('checkprice', 'SalesController@checkprice');

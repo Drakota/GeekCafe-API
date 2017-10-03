@@ -33,7 +33,7 @@ class SalesController extends BaseController
         return response()->json(['order' => [
           'subtotal' => round($price, 2),
           'total' => round($price, 2)
-          ]], 200);
+        ]], 200);
     }
 
     public function create(SaleCreatePost $request)
