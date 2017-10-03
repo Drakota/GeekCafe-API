@@ -30,5 +30,7 @@ class DatabaseSeeder extends Seeder
       $this->call('ItemSubitemsTableSeeder');
       DB::table('item_prices')->truncate();
       $this->call('ItemPricesTableSeeder');
+      DB::table('promotions')->truncate();
+      $this->call('PromotionsTableSeeder');
     }
 }
