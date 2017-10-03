@@ -13,8 +13,11 @@ use App\Http\Transformers\PromotionIndexTransformer;
 
 class PromotionsController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
-        return $this->transformCollection(Promotion::all(), new PromotionIndexTransformer);
+        $paginator = Promotion::where('start_date', '<=', Carbon::today())
+        ->where('end_date', '>=', Carbon::today())
+        ->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
+        return $this->paginate($paginator, new PromotionIndexTransformer);
     }
 }

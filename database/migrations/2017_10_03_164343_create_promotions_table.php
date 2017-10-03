@@ -15,8 +15,8 @@ class CreatePromotionsTable extends Migration
     {
       Schema::create('promotions', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('item_id')->unsigned();
-        $table->foreign('item_id')->references('id')->on('items');
+        $table->integer('item_price_id')->unsigned();
+        $table->foreign('item_price_id')->references('id')->on('item_prices');
         $table->text('description');
         $table->integer('available_per_user');
         $table->string('reduction');

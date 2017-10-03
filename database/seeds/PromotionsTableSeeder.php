@@ -15,9 +15,9 @@ class PromotionsTableSeeder extends Seeder {
     $reduction = ['5.00', '10%', '2.50', '15%', '1.23', '100%', '2.00'];
 
      $faker = Faker::create();
-     foreach (range(1, 7) as $index) {
+     foreach (range(1, 10) as $index) {
        Promotion::create([
-          'item_id' => $index,
+          'item_price_id' => $index + rand(0, 30),
           'description' => $faker->realText(),
           'available_per_user' => rand(1, 3),
           'reduction' => $reduction[rand(0, count($reduction) - 1)],

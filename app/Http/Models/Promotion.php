@@ -7,8 +7,8 @@ class Promotion extends Model
 {
     protected $table = 'promotions';
     protected $primaryKey = 'id';
-    public function item()
+    public function item_price()
     {
-        return $this->hasOne('App\Http\Models\Item', 'id', 'item_id');
+        return $this->hasOne('App\Http\Models\ItemPrice', 'id', 'item_price_id');
     }
 }
