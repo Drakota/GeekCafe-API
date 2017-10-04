@@ -15,8 +15,8 @@ class CreateSaleItemsTable extends Migration
     {
         Schema::create('sale_items', function (Blueprint $table) {
           $table->increments('id');
-          $table->integer('item_id')->unsigned();
-          $table->foreign('item_id')->references('id')->on('item_prices');
+          $table->integer('item_price_id')->unsigned();
+          $table->foreign('item_price_id')->references('id')->on('item_prices');
           $table->integer('sale_id')->unsigned();
           $table->foreign('sale_id')->references('id')->on('sales');
           $table->timestamps();
