@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 use App\Http\Models\ItemPrice;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,16 @@ class AppServiceProvider extends ServiceProvider
       Validator::extend('validSubitem', function ($attribute, $value, $parameters, $validator) {
           $item = ItemPrice::find($parameters[0])->item;
           return in_array($value, $item->subitems->pluck('subitem_id')->all());
+      });
+      Validator::extend('empty_when', function ($attribute, $value, $parameters, $validator) {
+          foreach ($parameters as $key)
+          {
+              if (!empty(Input::get($key)))
+              {
+                  return false;
+              }
+          }
+          return true;
       });
     }
 

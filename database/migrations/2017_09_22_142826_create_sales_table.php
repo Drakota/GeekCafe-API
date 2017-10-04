@@ -17,6 +17,8 @@ class CreateSalesTable extends Migration
           $table->increments('id');
           $table->integer('user_id')->unsigned();
           $table->foreign('user_id')->references('id')->on('users');
+          $table->boolean('payed')->default(0);
+          $table->float('amount', 8, 2)->default(0);
           $table->boolean('is_active')->default(1);
           $table->timestamps();
           $table->softDeletes();

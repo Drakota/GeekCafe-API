@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use App\Http\Requests\Sales\SaleCreatePost;
+use App\Http\Requests\Sales\CheckPricePost;
 use App\Http\Models\ItemPrice;
 use App\Http\Models\Subitem;
 use App\Http\Models\Sale;
@@ -17,7 +18,18 @@ use App\Http\Models\SubitemSale;
 
 class SalesController extends BaseController
 {
-    public function checkprice(SaleCreatePost $request)
+    function __construct()
+    {
+      \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
+    }
+
+    public function checkprice(CheckPricePost $request)
+    {
+        $order = $this->getprice($request);
+        return $order;
+    }
+
+    private function getprice($request)
     {
         $price = 0;
         foreach ($request->input()['items'] as $key => $value) {
@@ -30,22 +42,52 @@ class SalesController extends BaseController
               }
             }
         }
-        return response()->json(['order' => [
+        return ['order' => [
           'subtotal' => round($price, 2),
           'total' => round($price, 2)
-        ]], 200);
+        ]];
     }
 
     public function create(SaleCreatePost $request)
     {
         $user = $request->user();
-        $sale = Sale::create([
-          'user_id' => $user->id,
-        ]);
+
+        if (isset($request->input()['card_token'])) {
+          $charge = \Stripe\Charge::create(array(
+            "amount" => $this->getprice($request)['order']['total'] * 100,
+            "currency" => "cad",
+            "description" => "Order Geek Cafe",
+            "source" => $request->input()['card_token'],
+          ));
+          $sale = Sale::create([
+            'user_id' => $user->id,
+            'amount' => $this->getprice($request)['order']['total'],
+            'payed' => 1,
+          ]);
+        }
+        else if ($request->input()['card_pay'] == true) {
+          $charge = \Stripe\Charge::create(array(
+            "amount" => $this->getprice($request)['order']['total'] * 100,
+            "currency" => "cad",
+            "description" => "Order Geek Cafe",
+            "customer" => $user->stripe_cus,
+          ));
+          $sale = Sale::create([
+            'user_id' => $user->id,
+            'amount' => $this->getprice($request)['order']['total'],
+            'payed' => 1,
+          ]);
+        }
+        else {
+          $sale = Sale::create([
+            'user_id' => $user->id,
+            'amount' => $this->getprice($request)['order']['total'],
+          ]);
+        }
         foreach ($request->input()['items'] as $key => $value) {
             $item = ItemPrice::find($value['price_id']);
             $itemsale = ItemSale::create([
-              'item_id' => $item->id,
+              'item_price_id' => $item->id,
               'sale_id' => $sale->id,
             ]);
             if (isset($value['subitems'])) {
@@ -53,10 +95,10 @@ class SalesController extends BaseController
                 SubitemSale::create([
                   'sale_item_id' => $itemsale->id,
                   'subitem_id' => $subitemvalue['id'],
-                  'sale_id' => $sale->id,
                 ]);
               }
             }
         }
+        return response()->json(['status' => 'Order proceeded successfully!'], 200);
     }
 }
