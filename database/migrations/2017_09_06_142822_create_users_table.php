@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
           $table->string('gender');
           $table->date('birth_date');
           $table->string('phone')->nullable();
+          $table->integer('points')->default(0);
           $table->string('device_token', 2000)->nullable();
           $table->string('facebook_id', 300)->nullable();
           $table->string('stripe_cus', 300)->nullable();

@@ -22,6 +22,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('user', 'UsersController@view');
   $api->put('user/changepassword', 'UsersController@modifypassword');
   $api->put('user/changeemail', 'UsersController@modifyemail');
+  $api->get('user/points', 'UsersController@points');
 
   /**
   * PaymentMethodsController

@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Transformers\UserTransformer;
 use App\Http\Models\User;
+use App\Http\Models\PointValue;
 
 /**
  * User resource representation.
@@ -29,7 +30,8 @@ class UsersController extends BaseController
     public function create(Request $request)
     {
         $dispatcher = app('Dingo\Api\Dispatcher');
-        $payload = $request->only('email', 'password', 'first_name', 'last_name', 'device_token', 'image_id', 'phone', 'gender', 'birth_date');
+        $payload = $request->only('email', 'password', 'first_name', 'last_name', 'device_token',
+        'image_id', 'phone', 'gender', 'birth_date');
         $this->validation($payload, [
           'email' => ['required', 'email', 'unique:users'],
           'password' => ['required', 'min:7'],
@@ -108,6 +110,16 @@ class UsersController extends BaseController
         $payload = app('request')->only('email');
         $this->validation($payload,['email' => ['required', 'email', 'unique:users'],]);
         return response()->json(['status' => 'This email is available!'], 200);
+    }
+
+    public function points(Request $request)
+    {
+        $user = $request->user();
+        $pointvalue = PointValue::first();
+        return response()->json(['user' => [
+          'points' => $user->points,
+          'value' => round($user->points * $pointvalue->value, 2),
+        ]], 200);
     }
     //
     // public function forgetpassword()

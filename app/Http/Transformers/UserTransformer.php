@@ -20,6 +20,7 @@ class UserTransformer extends TransformerAbstract
           'birth_date' => $user->birth_date,
           'email' => $user->email,
           'phone' => $user->phone,
+          'points' => $user->points,
           'profile_image' => env('IMG_URL') . $user->image_id,
         ];
     }
