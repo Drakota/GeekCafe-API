@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
+use App\Http\Transformers\SaleHistoryTransformer;
 use App\Http\Requests\Sales\SaleCreatePost;
 use App\Http\Requests\Sales\CheckPricePost;
 use App\Http\Models\ItemPrice;
@@ -100,5 +101,12 @@ class SalesController extends BaseController
             }
         }
         return response()->json(['status' => 'Order proceeded successfully!'], 200);
+    }
+
+    public function history(Request $request)
+    {
+        $user = $request->user();
+        $paginator = $user->sales()->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
+        return $this->paginate($paginator, new SaleHistoryTransformer);
     }
 }

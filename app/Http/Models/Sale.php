@@ -10,4 +10,8 @@ class Sale extends Model
     ];
     protected $table = 'sales';
     protected $primaryKey = 'id';
+    public function items()
+    {
+        return $this->hasMany('App\Http\Models\SaleItem', 'sale_id', 'id');
+    }
 }

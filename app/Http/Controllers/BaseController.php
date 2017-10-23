@@ -26,10 +26,11 @@ class BaseController extends Controller
     }
     public function paginate($paginator, $transformer)
     {
+      $constructnotworking = new Manager;
       $data = $paginator->getCollection();
       $resources = new Collection($data, $transformer);
       $resources->setPaginator(new IlluminatePaginatorAdapter($paginator));
-      return $this->fractal->createData($resources)->toArray();
+      return $constructnotworking->createData($resources)->toArray();
     }
     public function validation($payload, $rules)
     {
