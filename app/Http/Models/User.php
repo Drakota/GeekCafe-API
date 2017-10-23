@@ -19,4 +19,8 @@ class User extends Model implements Authenticatable, CanResetPassword
     ];
     protected $table = 'users';
     protected $primaryKey = 'id';
+    public function sales()
+    {
+        return $this->hasMany('App\Http\Models\Sale', 'user_id', 'id');
+    }
 }

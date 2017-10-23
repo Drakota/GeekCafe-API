@@ -48,6 +48,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   */
   $api->post('checkprice', 'SalesController@checkprice');
   $api->post('order', 'SalesController@create');
+  $api->get('user/history', 'SalesController@history');
 });
 $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 
