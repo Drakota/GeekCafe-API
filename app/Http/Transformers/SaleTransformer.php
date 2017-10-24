@@ -3,7 +3,7 @@ namespace App\Http\Transformers;
 use App\Http\Models\Sale;
 use League\Fractal\TransformerAbstract;
 
-class SaleHistoryTransformer extends TransformerAbstract
+class SaleTransformer extends TransformerAbstract
 {
     /**
      * Turn this item object into a generic array
@@ -14,8 +14,19 @@ class SaleHistoryTransformer extends TransformerAbstract
     {
         return [
           'id' => $sale->id,
+          'payed' => (boolean)$sale->payed,
           'amount' => $sale->amount,
+          'is_active' => (boolean)$sale->is_active,
           'created_at' => $sale->created_at,
         ];
+    }
+
+    protected $defaultIncludes = [
+        'items',
+    ];
+
+    public function includeItems(Sale $sale)
+    {
+      return $this->collection($sale->items, new SaleItemTransformer);
     }
 }

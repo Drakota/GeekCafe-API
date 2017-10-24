@@ -8,6 +8,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
+use App\Http\Transformers\SaleTransformer;
 use App\Http\Transformers\SaleHistoryTransformer;
 use App\Http\Requests\Sales\SaleCreatePost;
 use App\Http\Requests\Sales\CheckPricePost;
@@ -28,6 +29,15 @@ class SalesController extends BaseController
     {
         $order = $this->getprice($request);
         return $order;
+    }
+
+    public function view(Request $request, Sale $sale)
+    {
+       $user = $request->user();
+       if ($user->id != $sale->user_id) {
+         return response()->json(['status' => 'You are not authorized to see this order!'], 401);
+       }
+       return $this->response->item($sale, new SaleTransformer);
     }
 
     private function getprice($request)
@@ -106,7 +116,7 @@ class SalesController extends BaseController
     public function history(Request $request)
     {
         $user = $request->user();
-        $paginator = $user->sales()->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
+        $paginator = $user->sales()->where('is_active', 0)->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
         return $this->paginate($paginator, new SaleHistoryTransformer);
     }
 }
