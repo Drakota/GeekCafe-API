@@ -28,6 +28,8 @@ class SaleCreatePost extends FormRequest
           'items' => ['required'],
           'card_token' => ['required_without:card_pay', 'empty_when:card_pay'],
           'card_pay' => ['required_without:card_token', 'empty_when:card_token', 'boolean'],
+          'branch_id' => ['required', 'exists:branches,id'],
+          'counter_id' => ['nullable', 'exists:counters,id', 'validCounter:branch_id'],
         ];
         foreach($this->request->get('items') as $key => $val)
         {

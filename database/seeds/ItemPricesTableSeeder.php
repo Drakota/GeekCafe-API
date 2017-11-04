@@ -14,7 +14,7 @@ class ItemPricesTableSeeder extends Seeder {
         $faker = Faker::create();
         $coffees = ['Caramel', 'Dark Mocha', 'White Chocolate', 'Java Chip', 'Mocha', 'White', 'Chai', 'Vanilla'];
         foreach (range(1, count($coffees)) as $index) {
-          for ($i=0; $i < 4; $i++) {
+          for ($i=0; $i < 3; $i++) {
             ItemPrice::create([
                'item_id' => $id,
                'price' => rand(10, 30) / 10 + $i,

@@ -12,9 +12,9 @@ class ItemSizesTableSeeder extends Seeder {
   {
      $faker = Faker::create();
 
-     $types = ['S', 'M', 'L', 'XL', '1 choix', '2 choix', '3 choix'];
+     $types = ['S', 'M', 'L', '1 choix', '2 choix', '3 choix'];
 
-     foreach (range(1, 7) as $index) {
+     foreach (range(1, 6) as $index) {
        ItemSize::create([
           'name' => $types[$index - 1],
        ]);

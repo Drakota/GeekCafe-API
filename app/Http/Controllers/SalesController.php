@@ -72,6 +72,8 @@ class SalesController extends BaseController
           ));
           $sale = Sale::create([
             'user_id' => $user->id,
+            'branch_id' => $request['branch_id'],
+            'counter_id' => $request['counter_id'],
             'amount' => $this->getprice($request)['order']['total'],
             'payed' => 1,
           ]);
@@ -86,6 +88,8 @@ class SalesController extends BaseController
           $sale = Sale::create([
             'user_id' => $user->id,
             'amount' => $this->getprice($request)['order']['total'],
+            'branch_id' => $request['branch_id'],
+            'counter_id' => $request['counter_id'],
             'payed' => 1,
           ]);
         }
@@ -93,6 +97,8 @@ class SalesController extends BaseController
           $sale = Sale::create([
             'user_id' => $user->id,
             'amount' => $this->getprice($request)['order']['total'],
+            'branch_id' => $request['branch_id'],
+            'counter_id' => $request['counter_id'],
           ]);
         }
         foreach ($request->input()['items'] as $key => $value) {

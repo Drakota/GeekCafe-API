@@ -17,10 +17,10 @@ class PromotionsTableSeeder extends Seeder {
      $faker = Faker::create();
      foreach (range(1, 10) as $index) {
        Promotion::create([
-          'item_price_id' => $index + rand(0, 30),
+          'item_id' => $index + rand(0, 3),
           'description' => $faker->realText(),
           'available_per_user' => rand(1, 3),
-          'reduction' => $reduction[rand(0, count($reduction) - 1)],
+          'discount' => $reduction[rand(0, count($reduction) - 1)],
           'start_date' => Carbon::now(),
           'end_date' => Carbon::now()->addDays(rand(20, 40)),
        ]);

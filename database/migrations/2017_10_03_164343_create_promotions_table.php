@@ -15,9 +15,10 @@ class CreatePromotionsTable extends Migration
     {
       Schema::create('promotions', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('promotion_id')->unsigned();
-        $table->string('promotion_type');
+        $table->integer('item_id')->unsigned();
+        $table->foreign('item_id')->references('id')->on('items');
         $table->text('description');
+        $table->text('discount');
         $table->integer('available_per_user');
         $table->date('start_date');
         $table->date('end_date');

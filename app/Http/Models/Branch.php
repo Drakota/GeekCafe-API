@@ -10,4 +10,8 @@ class Branch extends Model
     ];
     protected $table = 'branches';
     protected $primaryKey = 'id';
+    public function counters()
+    {
+        return $this->hasMany('App\Http\Models\Counter', 'branch_id', 'id');
+    }
 }

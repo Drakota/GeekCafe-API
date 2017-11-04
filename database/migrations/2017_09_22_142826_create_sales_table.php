@@ -20,6 +20,10 @@ class CreateSalesTable extends Migration
           $table->boolean('payed')->default(0);
           $table->float('amount', 8, 2)->default(0);
           $table->boolean('is_active')->default(1);
+          $table->integer('branch_id')->unsigned();
+          $table->foreign('branch_id')->references('id')->on('branches');
+          $table->integer('counter_id')->unsigned()->nullable();
+          $table->foreign('counter_id')->references('id')->on('counters');
           $table->timestamps();
           $table->softDeletes();
         });
