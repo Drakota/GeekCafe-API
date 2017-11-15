@@ -23,11 +23,11 @@ class PromotionIndexTransformer extends TransformerAbstract
     }
 
     protected $defaultIncludes = [
-        'item_price',
+        'item',
     ];
 
-    public function includeItemPrice(Promotion $promotion)
+    public function includeItem(Promotion $promotion)
     {
-      return $this->item($promotion->item_price, new ItemPricePromotionTransformer);
+      return $this->item($promotion->item, new ItemPromotionTransformer);
     }
 }

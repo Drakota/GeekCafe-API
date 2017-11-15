@@ -44,6 +44,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('promotions', 'PromotionsController@index');
 
   /**
+  * UploadsController
+  */
+  $api->post('upload', 'UploadsController@upload');
+
+  /**
   * BranchesController
   */
   $api->get('branches', 'BranchesController@index');
