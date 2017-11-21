@@ -16,7 +16,7 @@ class PromotionIndexTransformer extends TransformerAbstract
           'id' => $promotion->id,
           'description' => $promotion->description,
           'available_per_user' => $promotion->available_per_user,
-          'reduction' => $promotion->reduction,
+          'reduction' => $promotion->discount,
           'start_date' => $promotion->start_date,
           'end_date' => $promotion->end_date,
         ];
