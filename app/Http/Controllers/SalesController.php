@@ -125,4 +125,11 @@ class SalesController extends BaseController
         $paginator = $user->sales()->where('is_active', 0)->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
         return $this->paginate($paginator, new SaleHistoryTransformer);
     }
+
+    public function currentorders(Request $request)
+    {
+        $user = $request->user();
+        $paginator = Sale::where('is_active', 1)->get();
+        return $this->paginate($paginator, new SaleHistoryTransformer);
+    }
 }
