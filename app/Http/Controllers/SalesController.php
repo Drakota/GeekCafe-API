@@ -129,7 +129,10 @@ class SalesController extends BaseController
     public function currentorders(Request $request)
     {
         $user = $request->user();
-        $paginator = Sale::where('is_active', 1)->get();
-        return $this->paginate($paginator, new SaleHistoryTransformer);
+        if ($user->is_employee) {
+          $paginator = Sale::where('is_active', 1)->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
+          return $this->paginate($paginator, new SaleTransformer);
+        }
+        else return response()->json(['status' => 'You are unauthorized!'], 401);
     }
 }
