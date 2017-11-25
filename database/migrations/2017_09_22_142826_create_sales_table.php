@@ -19,6 +19,7 @@ class CreateSalesTable extends Migration
           $table->foreign('user_id')->references('id')->on('users');
           $table->boolean('payed')->default(0);
           $table->float('amount', 8, 2)->default(0);
+          $table->float('discount_off', 8, 2)->default(0);
           $table->boolean('is_active')->default(1);
           $table->integer('branch_id')->unsigned();
           $table->foreign('branch_id')->references('id')->on('branches');

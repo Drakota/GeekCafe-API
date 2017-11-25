@@ -12,9 +12,6 @@ class ItemSubitemsTableSeeder extends Seeder {
   {
      $faker = Faker::create();
 
-     $free = ['Lait', 'Sucre', 'Crème'];
-     $nonfree = ['Chocolat', 'Fraises', 'Framboises', 'Bleuets', 'Bananes', 'Chocolat au lait', 'Chocolat Blanc'];
-
      for ($i=0; $i < 8; $i++) {
        for ($y=0; $y < 4; $y++) {
          ItemSubitem::create([
@@ -23,9 +20,15 @@ class ItemSubitemsTableSeeder extends Seeder {
          ]);
        }
      }
-     for ($w=5; $w < 11; $w++) {
+     for ($w=5; $w < 12; $w++) {
        ItemSubitem::create([
           'item_id' => 13,
+          'subitem_id' => $w,
+       ]);
+     }
+     for ($w=5; $w < 12; $w++) {
+       ItemSubitem::create([
+          'item_id' => 14,
           'subitem_id' => $w,
        ]);
      }

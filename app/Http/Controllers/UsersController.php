@@ -61,12 +61,13 @@ class UsersController extends BaseController
     public function modify(Request $request)
     {
         $user = $request->user();
-        $payload = $request->only('image_id', 'first_name', 'last_name');
+        $payload = $request->only('image_id', 'first_name', 'last_name', 'subscription_id');
         $this->validation($payload, [
           'first_name' => ['nullable'],
           'last_name' => ['nullable'],
           'device_token' => ['nullable'],
           'image_id' => ['nullable', 'exists:images,id'],
+          'subscription_id' => ['nullable', 'exists:subscriptions,id'],
         ]);
         $user->update(array_filter($payload));
 			  $user->touch();

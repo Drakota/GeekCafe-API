@@ -16,6 +16,7 @@ class ItemSubitemTransformer extends TransformerAbstract
           'id' => $itemsubitem->subitem->id,
           'name' => $itemsubitem->subitem->name,
           'price' => $itemsubitem->subitem->price,
+          'is_topping' => (boolean)$itemsubitem->subitem->is_topping,
           'image' => env('IMG_URL') . $itemsubitem->subitem->image_id,
         ];
     }

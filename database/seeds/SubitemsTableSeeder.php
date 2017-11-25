@@ -13,7 +13,8 @@ class SubitemsTableSeeder extends Seeder {
      $faker = Faker::create();
 
      $free = ['Lait', 'Sucre', 'Crème'];
-     $nonfree = ['Chocolat', 'Fraises', 'Framboises', 'Bleuets', 'Bananes', 'Chocolat au lait', 'Chocolat Blanc'];
+     $nonfree = ['Chocolat', 'Fraises', 'Framboises', 'Bleuets', 'Bananes'];
+     $toppings = ['Chocolat au lait', 'Chocolat Blanc', 'Pâtes à biscuit'];
 
      foreach (range(1, count($free)) as $index) {
        Subitem::create([
@@ -26,6 +27,14 @@ class SubitemsTableSeeder extends Seeder {
           'name' => $nonfree[$index - 1],
           'price' => rand(10, 60) / 10,
           'image_id' => rand(2, 110),
+       ]);
+     }
+     foreach (range(1, count($toppings)) as $index) {
+       Subitem::create([
+          'name' => $toppings[$index - 1],
+          'price' => rand(10, 60) / 10,
+          'image_id' => rand(2, 110),
+          'is_topping' => 1,
        ]);
      }
   }

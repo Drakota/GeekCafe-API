@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubItemsTable extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateSubItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subitems', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('name');
-          $table->double('price')->nullable();
-          $table->boolean('is_topping')->default(0);
-          $table->string('image_id');
-          $table->foreign('image_id')->references('id')->on('images');
+          $table->string('perk');
+          $table->double('price')->default(0);
+          $table->double('discount')->default(0);
+          $table->double('point_reward')->default(0);
+          $table->string('title');
+          $table->text('description');
           $table->timestamps();
-          $table->softDeletes();
         });
     }
 
@@ -33,6 +33,6 @@ class CreateSubItemsTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Schema::dropIfExists('subitems');
+        Schema::dropIfExists('subscriptions');
     }
 }

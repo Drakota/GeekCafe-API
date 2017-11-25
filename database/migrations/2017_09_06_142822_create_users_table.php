@@ -22,11 +22,13 @@ class CreateUsersTable extends Migration
           $table->string('gender');
           $table->date('birth_date');
           $table->string('phone')->nullable();
-          $table->integer('points')->default(0);
+          $table->float('points')->default(0);
           $table->string('device_token', 2000)->nullable();
           $table->string('facebook_id', 300)->nullable();
           $table->string('stripe_cus', 300)->nullable();
           $table->string('remember_token', 255)->nullable();
+          $table->integer('subscription_id')->unsigned()->default(1);
+          $table->foreign('subscription_id')->references('id')->on('subscriptions');
           $table->boolean('is_admin')->default(0);
           $table->boolean('is_employee')->default(0);
           $table->string('image_id')->default(1);

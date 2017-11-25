@@ -12,7 +12,7 @@ class User extends Model implements Authenticatable, CanResetPassword
 {
     use AuthenticableTrait, CanResetPasswordTrait, NotifiableTrait;
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'gender', 'birth_date', 'phone', 'device_token', 'image_id', 'facebook_id', 'stripe_cus'
+        'first_name', 'last_name', 'email', 'password', 'gender', 'birth_date', 'phone', 'device_token', 'image_id', 'facebook_id', 'stripe_cus', 'subscription_id'
     ];
     protected $hidden = [
         'password',
@@ -22,5 +22,9 @@ class User extends Model implements Authenticatable, CanResetPassword
     public function sales()
     {
         return $this->hasMany('App\Http\Models\Sale', 'user_id', 'id');
+    }
+    public function subscription()
+    {
+        return $this->hasOne('App\Http\Models\Subscription', 'id', 'subscription_id');
     }
 }

@@ -36,5 +36,7 @@ class DatabaseSeeder extends Seeder
       $this->call('PointValueTableSeeder');
       DB::table('counters')->truncate();
       $this->call('CountersTableSeeder');
+      DB::table('subscriptions')->truncate();
+      $this->call('SubscriptionsTableSeeder');
     }
 }

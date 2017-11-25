@@ -42,6 +42,7 @@ class SalesController extends BaseController
 
     private function getprice($request)
     {
+        $user = $request->user();
         $price = 0;
         foreach ($request->input()['items'] as $key => $value) {
             $item = ItemPrice::find($value['price_id']);
@@ -53,7 +54,10 @@ class SalesController extends BaseController
               }
             }
         }
+        $reduced = $price * ($user->subscription->discount / 100);
+        $price -= $reduced;
         return ['order' => [
+          'reduced' => round($reduced, 2),
           'subtotal' => round($price, 2),
           'total' => round($price, 2)
         ]];
@@ -63,44 +67,73 @@ class SalesController extends BaseController
     {
         $user = $request->user();
 
+        $order = $this->getprice($request)['order'];
+        $total = $order['total'];
+        $reduced = $order['reduced'];
+
+        if (isset($request->input()['points'])) {
+          if($request->input()['points'] <= $user->points)
+          {
+              $pointsused = $request->input()['points'];
+              if ($total < $request->input()['points'])
+              {
+                 $pointsused = $total;
+              }
+              $user->points -= $pointsused;
+              $user->save();
+              $total -= $pointsused;
+              $reduced += $pointsused;
+          }
+          else return response()->json(['error' => "Not enough points in your account!"], 403);
+        }
+
         if (isset($request->input()['card_token'])) {
-          $charge = \Stripe\Charge::create(array(
-            "amount" => $this->getprice($request)['order']['total'] * 100,
-            "currency" => "cad",
-            "description" => "Order Geek Cafe",
-            "source" => $request->input()['card_token'],
-          ));
+          if ($total != 0) {
+            $charge = \Stripe\Charge::create(array(
+              "amount" => $total * 100,
+              "currency" => "cad",
+              "description" => "Order Geek Cafe",
+              "source" => $request->input()['card_token'],
+            ));
+          }
           $sale = Sale::create([
             'user_id' => $user->id,
             'branch_id' => $request['branch_id'],
             'counter_id' => $request['counter_id'],
-            'amount' => $this->getprice($request)['order']['total'],
+            'discount_off' => $reduced,
+            'amount' => $total,
             'payed' => 1,
           ]);
         }
         else if ($request->input()['card_pay'] == true) {
-          $charge = \Stripe\Charge::create(array(
-            "amount" => $this->getprice($request)['order']['total'] * 100,
-            "currency" => "cad",
-            "description" => "Order Geek Cafe",
-            "customer" => $user->stripe_cus,
-          ));
+          if ($total != 0) {
+            $charge = \Stripe\Charge::create(array(
+              "amount" => $total * 100,
+              "currency" => "cad",
+              "description" => "Order Geek Cafe",
+              "customer" => $user->stripe_cus,
+            ));
+          }
           $sale = Sale::create([
             'user_id' => $user->id,
-            'amount' => $this->getprice($request)['order']['total'],
+            'amount' => $total,
             'branch_id' => $request['branch_id'],
             'counter_id' => $request['counter_id'],
+            'discount_off' => $reduced,
             'payed' => 1,
           ]);
         }
         else {
           $sale = Sale::create([
             'user_id' => $user->id,
-            'amount' => $this->getprice($request)['order']['total'],
+            'amount' => $total,
             'branch_id' => $request['branch_id'],
+            'discount_off' => $reduced,
             'counter_id' => $request['counter_id'],
           ]);
         }
+        $user->points += round($total * 0.2, 2); // TODO CHANGE THIS GAIN POINTS EVEN WHEN NOT PAYED
+        $user->save();
         foreach ($request->input()['items'] as $key => $value) {
             $item = ItemPrice::find($value['price_id']);
             $itemsale = ItemSale::create([

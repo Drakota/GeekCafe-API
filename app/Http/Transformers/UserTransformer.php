@@ -22,6 +22,15 @@ class UserTransformer extends TransformerAbstract
           'phone' => $user->phone,
           'points' => $user->points,
           'profile_image' => env('IMG_URL') . $user->image_id,
+          'subscription' => [
+             'id' => $user->subscription_id,
+             'title' => $user->subscription->title,
+             'description' => $user->subscription->description,
+             'perk' => $user->subscription->perk,
+             'point_reward' => $user->subscription->point_reward,
+             'discount' => $user->subscription->discount,
+             'price' => $user->subscription->price,
+          ],
         ];
     }
 

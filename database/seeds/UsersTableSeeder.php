@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder {
           'email' => "account".$index."@geekcafe.com",
           'password' => Hash::make("geekcafe"),
           'gender' => $genders[rand(0, sizeof($genders) - 1)],
-          'points' => rand(100, 150),
+          'points' => 0,
           'phone' => $faker->phoneNumber(),
           'birth_date' => $faker->date(),
           'first_name' => $faker->firstName(),

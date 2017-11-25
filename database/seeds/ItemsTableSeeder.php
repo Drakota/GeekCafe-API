@@ -36,5 +36,11 @@ class ItemsTableSeeder extends Seeder {
         'type_id' => 3,
         'image_id' => rand(2, 110),
      ]);
+     Item::create([
+        'name' => 'Fondue',
+        'description' => $faker->realText(),
+        'type_id' => 4,
+        'image_id' => rand(2, 110),
+     ]);
   }
 }

@@ -31,11 +31,19 @@ class ItemPricesTableSeeder extends Seeder {
           ]);
           $id++;
         }
-        for ($y=0; $y < 4; $y++) {
+        for ($y=0; $y < 3; $y++) {
           ItemPrice::create([
              'item_id' => $id,
              'price' => 1 + $y,
              'size_id' => 4 + $y,
+          ]);
+        }
+        $id++;
+        for ($y=0; $y < 3; $y++) {
+          ItemPrice::create([
+             'item_id' => $id,
+             'price' => 4 + $y,
+             'size_id' => 6 + $y,
           ]);
         }
    }

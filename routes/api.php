@@ -54,6 +54,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('branches', 'BranchesController@index');
 
   /**
+  * SubscriptionsController
+  */
+  $api->get('subscriptions', 'SubscriptionsController@index');
+
+  /**
   * SalesController
   */
   $api->post('checkprice', 'SalesController@checkprice');
