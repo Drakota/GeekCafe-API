@@ -38,7 +38,7 @@ class UsersController extends BaseController
           'first_name' => ['required'],
           'last_name' => ['required'],
           'device_token' => ['nullable'],
-          'phone' => ['nullable'],
+          'phone' => ['nullable', 'regex:/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/'],
           'gender' => ['required', Rule::in(['male', 'female', 'other'])],
           'image_id' => ['nullable', 'exists:images,id'],
           'birth_date' => ['required', 'date_format:Y-m-d', 'before:today'],
@@ -63,11 +63,12 @@ class UsersController extends BaseController
     public function modify(Request $request)
     {
         $user = $request->user();
-        $payload = $request->only('image_id', 'first_name', 'last_name', 'subscription_id');
+        $payload = $request->only('image_id', 'first_name', 'last_name', 'subscription_id', 'phone');
         $this->validation($payload, [
           'first_name' => ['nullable'],
           'last_name' => ['nullable'],
           'device_token' => ['nullable'],
+          'phone' => ['nullable', 'regex:/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/'],
           'image_id' => ['nullable', 'exists:images,id'],
           'subscription_id' => ['nullable', 'exists:subscriptions,id'],
         ]);
