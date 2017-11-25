@@ -20,5 +20,4 @@ class ItemSubitemTransformer extends TransformerAbstract
           'image' => env('IMG_URL') . $itemsubitem->subitem->image_id,
         ];
     }
-
 }

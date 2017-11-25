@@ -32,7 +32,6 @@ class SubitemsTableSeeder extends Seeder {
      foreach (range(1, count($toppings)) as $index) {
        Subitem::create([
           'name' => $toppings[$index - 1],
-          'price' => rand(10, 60) / 10,
           'image_id' => rand(2, 110),
           'is_topping' => 1,
        ]);
