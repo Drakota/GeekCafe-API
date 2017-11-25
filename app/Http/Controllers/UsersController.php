@@ -49,6 +49,8 @@ class UsersController extends BaseController
         $payload['stripe_cus'] = $customer->id;
         $unhashpass = $payload['password'];
         $payload['image_id'] = 1;
+        $payload['subscription_id'] = 1;
+        $payload['points'] = 0;
         $payload['password'] = Hash::make($payload['password']);
         $user = User::create(array_filter($payload));
         $createuser = $this->transformItem($user, new UserTransformer);
