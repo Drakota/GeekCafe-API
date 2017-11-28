@@ -50,12 +50,6 @@ class SalesController extends BaseController
         $price = 0;
         $reduced = 0;
 
-        if (isset($request->input()['promotion_id']))
-        {
-          $wasreduced = $this->usePromotion($request, $reduced);
-          if(!$wasreduced) return ['error' => "Promotion Code not applicable for this order!"];
-        }
-
         foreach ($request->input()['items'] as $key => $value) {
             $item = ItemPrice::find($value['price_id']);
             $price += $item->price;
@@ -66,11 +60,31 @@ class SalesController extends BaseController
               }
             }
         }
+
         $reduced += $price * ($user->subscription->discount / 100);
+        if (isset($request->input()['promotion_id']))
+        {
+          $wasreduced = $this->usePromotion($request, $reduced);
+          if(!$wasreduced) return ['error' => "Promotion Code not applicable for this order!"];
+        }
+        if (isset($request->input()['points'])) {
+          if($request->input()['points'] <= $user->points)
+          {
+              $pointsused = $request->input()['points'];
+              if (($price - $reduced) < $request->input()['points'])
+              {
+                 $pointsused = ($price - $reduced);
+              }
+              $reduced += $pointsused;
+          }
+          else return response()->json(['error' => "Not enough points in your account!"], 403);
+        }
+        $subtotal = $price;
         $price -= $reduced;
         return ['order' => [
+          'points_used' => $pointsused,
           'reduced' => round($reduced, 2),
-          'subtotal' => round($price, 2),
+          'subtotal' => round($subtotal, 2),
           'total' => round($price, 2)
         ]];
     }
@@ -87,28 +101,18 @@ class SalesController extends BaseController
         $total = $order['order']['total'];
         $reduced = $order['order']['reduced'];
 
-        if (isset($request->input()['points'])) {
-          if($request->input()['points'] <= $user->points)
-          {
-              $pointsused = $request->input()['points'];
-              if ($total < $request->input()['points'])
-              {
-                 $pointsused = $total;
-              }
-              $user->points -= $pointsused;
-              $user->save();
-              $total -= $pointsused;
-              $reduced += $pointsused;
-          }
-          else return response()->json(['error' => "Not enough points in your account!"], 403);
-        }
-
         if (isset($request->input()['promotion_id']))
         {
           UserPromotion::create([
               'promotion_id' => $request->input()['promotion_id'],
               'user_id' => $user->id,
           ]);
+        }
+
+        if (isset($request->input()['points']))
+        {
+          $user->points -= $order['order']['points_used'];
+          $user->save();
         }
 
         if (isset($request->input()['card_token'])) {
