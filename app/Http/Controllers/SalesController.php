@@ -17,9 +17,13 @@ use App\Http\Models\Subitem;
 use App\Http\Models\Sale;
 use App\Http\Models\ItemSale;
 use App\Http\Models\SubitemSale;
+use App\Http\Models\UserPromotion;
+use App\Http\Traits\PromotionTrait;
 
 class SalesController extends BaseController
 {
+    use PromotionTrait;
+
     function __construct()
     {
       \Stripe\Stripe::setApiKey(env('STRIPE_KEY'));
@@ -44,6 +48,14 @@ class SalesController extends BaseController
     {
         $user = $request->user();
         $price = 0;
+        $reduced = 0;
+
+        if (isset($request->input()['promotion_id']))
+        {
+          $wasreduced = $this->usePromotion($request, $reduced);
+          if(!$wasreduced) return ['error' => "Promotion Code not applicable for this order!"];
+        }
+
         foreach ($request->input()['items'] as $key => $value) {
             $item = ItemPrice::find($value['price_id']);
             $price += $item->price;
@@ -54,7 +66,7 @@ class SalesController extends BaseController
               }
             }
         }
-        $reduced = $price * ($user->subscription->discount / 100);
+        $reduced += $price * ($user->subscription->discount / 100);
         $price -= $reduced;
         return ['order' => [
           'reduced' => round($reduced, 2),
@@ -67,9 +79,13 @@ class SalesController extends BaseController
     {
         $user = $request->user();
 
-        $order = $this->getprice($request)['order'];
-        $total = $order['total'];
-        $reduced = $order['reduced'];
+        $order = $this->getprice($request);
+
+        if (isset($order['error'])) {
+           return response()->json($this->getprice($request), 403);
+        }
+        $total = $order['order']['total'];
+        $reduced = $order['order']['reduced'];
 
         if (isset($request->input()['points'])) {
           if($request->input()['points'] <= $user->points)
@@ -85,6 +101,14 @@ class SalesController extends BaseController
               $reduced += $pointsused;
           }
           else return response()->json(['error' => "Not enough points in your account!"], 403);
+        }
+
+        if (isset($request->input()['promotion_id']))
+        {
+          UserPromotion::create([
+              'promotion_id' => $request->input()['promotion_id'],
+              'user_id' => $user->id,
+          ]);
         }
 
         if (isset($request->input()['card_token'])) {
@@ -149,7 +173,8 @@ class SalesController extends BaseController
               }
             }
         }
-        return response()->json(['status' => 'Order proceeded successfully!'], 200);
+        return response()->json(['status' => 'Order proceeded successfully!',
+        'point_balance' => $user->points], 200);
     }
 
     public function history(Request $request)

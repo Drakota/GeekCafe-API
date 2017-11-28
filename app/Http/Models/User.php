@@ -27,4 +27,8 @@ class User extends Model implements Authenticatable, CanResetPassword
     {
         return $this->hasOne('App\Http\Models\Subscription', 'id', 'subscription_id');
     }
+    public function used_promotions()
+    {
+        return $this->hasMany('App\Http\Models\UserPromotion', 'user_id', 'id');
+    }
 }

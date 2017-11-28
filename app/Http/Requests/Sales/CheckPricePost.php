@@ -26,6 +26,8 @@ class CheckPricePost extends FormRequest
     {
         $rules = [
           'items' => ['required'],
+          'points' => ['nullable', 'integer'],
+          'promotion_id' => ['nullable', 'integer', 'exists:promotions,id'],
         ];
         foreach($this->request->get('items') as $key => $val)
         {
