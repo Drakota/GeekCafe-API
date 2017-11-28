@@ -44,6 +44,23 @@ class SalesController extends BaseController
        return $this->response->item($sale, new SaleTransformer);
     }
 
+    public function modify(Request $request, Sale $sale)
+    {
+       $user = $request->user();
+       if ($user->is_employee) {
+         $payload = $request->only('is_active', 'payed');
+         $this->validation($payload, [
+           'is_active' => ['nullable', 'boolean'],
+           'payed' => ['nullable', 'boolean'],
+         ]);
+         $sale->is_active = $payload['is_active'];
+         $sale->payed = $payload['payed'];
+         $sale->save();
+         return $this->response->item($sale, new SaleTransformer);
+       }
+       else return response()->json(['status' => 'You are unauthorized!'], 401);
+    }
+
     private function getprice($request)
     {
         $user = $request->user();

@@ -66,6 +66,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers', 'middleware' => ['ap
   $api->get('order/{sale}', 'SalesController@view');
   $api->get('user/history', 'SalesController@history');
   $api->get('orders', 'SalesController@currentorders');
+  $api->post('order/{sale}', 'SalesController@modify');
 });
 $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 
