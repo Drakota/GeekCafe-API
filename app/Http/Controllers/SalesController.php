@@ -213,7 +213,7 @@ class SalesController extends BaseController
     {
         $user = $request->user();
         if ($user->is_employee) {
-          $paginator = Sale::where('is_active', 1)->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
+          $paginator = Sale::where('is_active', 1)->orderBy('created_at')->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
           return $this->paginate($paginator, new SaleTransformer);
         }
         else return response()->json(['status' => 'You are unauthorized!'], 401);
