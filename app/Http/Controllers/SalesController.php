@@ -66,6 +66,7 @@ class SalesController extends BaseController
         $user = $request->user();
         $price = 0;
         $reduced = 0;
+        $pointsused = 0;
 
         foreach ($request->input()['items'] as $key => $value) {
             $item = ItemPrice::find($value['price_id']);
@@ -201,7 +202,7 @@ class SalesController extends BaseController
     public function history(Request $request)
     {
         $user = $request->user();
-        $paginator = $user->sales()->where('is_active', 0)->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
+        $paginator = $user->sales()->where('is_active', 0)->orderBy('created_at', 'desc')->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
         return $this->paginate($paginator, new SaleHistoryTransformer);
     }
 
