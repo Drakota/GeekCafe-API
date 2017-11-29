@@ -53,8 +53,10 @@ class SalesController extends BaseController
            'is_active' => ['nullable', 'boolean'],
            'payed' => ['nullable', 'boolean'],
          ]);
-         $sale->is_active = $payload['is_active'];
-         $sale->payed = $payload['payed'];
+         if(isset($payload['is_active']))
+            $sale->is_active = $payload['is_active'];
+         if(isset($payload['payed']))
+            $sale->payed = $payload['payed'];
          $sale->save();
          return $this->response->item($sale, new SaleTransformer);
        }
