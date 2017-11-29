@@ -103,6 +103,7 @@ class SalesController extends BaseController
           'points_used' => $pointsused,
           'reduced' => round($reduced, 2),
           'subtotal' => round($subtotal, 2),
+          'taxes' => round($price * 0.14975, 2),
           'total' => round($price * 1.14975, 2)
         ]];
     }
