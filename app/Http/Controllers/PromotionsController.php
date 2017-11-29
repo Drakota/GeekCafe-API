@@ -15,9 +15,7 @@ class PromotionsController extends BaseController
 {
     public function index(Request $request)
     {
-        $paginator = Promotion::where('start_date', '<=', Carbon::today())
-        ->where('end_date', '>=', Carbon::today())
-        ->paginate(is_numeric($request->input('limit')) ? $request->input('limit') : 10);
-        return $this->paginate($paginator, new PromotionIndexTransformer);
+        $user =  $request->user();
+        return $this->transformCollection($user->available_promotions(), new PromotionIndexTransformer);
     }
 }
